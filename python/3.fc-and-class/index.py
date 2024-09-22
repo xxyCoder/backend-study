@@ -48,3 +48,81 @@ async def async_fc():
 a_fc = async_fc()
 print('async: ', a_fc)
 asyncio.run(async_fc())
+
+'''
+# 装饰器
+1. @为语法糖，相当于greet=my_decorator(greet)
+2. 通过functools.wraps包裹原函数，可以帮助保留原函数的元信息
+'''
+import functools
+def my_decorator(func):
+  @functools.wraps(func)
+  def wrapper(message):
+    print('wrapper!!!')
+    func(message)
+  return wrapper
+
+@my_decorator
+def greet(message):
+  print('greet, hi!', message)
+greet('xxyCoder')
+
+# 类装饰器
+class Count():
+  def __init__(self, func) -> None:
+    self.cnt = 0
+    self.func = func
+  def __call__(self, *args: asyncio.Any, **kwds: asyncio.Any) -> asyncio.Any:
+    self.cnt += 1
+    return self.func(*args, **kwds)
+
+'''
+# 类
+1. class声明一个类
+2. __开头的属性是私有的，与函数在一处声明的是静态属性
+3. init表示构造函数，@staticmethod修饰的是静态方法，@classmethod修饰的是类方法，用于帮忙创建类实例
+'''
+class Document():
+  STATIC = 'static upper'
+  static = 'static lower'
+  def __init__(self, title, author, content) -> None:
+    print('init document')
+    self.title = title
+    self.author = author
+    self.__content = content
+  def see(self):
+    print('content: ', self.__content)
+  @staticmethod
+  def show_static():
+    print('class static: ', Document.STATIC, Document.static)
+  @classmethod
+  def create_empty_doc(cls, title, author):
+    return cls(title=title, author = author, content = "")
+    
+doc = Document('py class', 'xxyCoder', 'self')
+doc.see()
+Document.show_static()
+
+empty_doc = Document.create_empty_doc('empty', 'xxyCoder')
+empty_doc.see()
+
+# 继承
+class DOCX(Document):
+  def __init__(self, title, author, content, is_read) -> None:
+    self.__is_read = is_read
+    self.__content = "override " + content
+    super().__init__(title, author, content)
+  def see(self):
+    print('sub class see')
+    return super().see()
+    
+    
+dc = DOCX('docx', 'xxy', 'none', False)
+dc.see()
+
+# 抽象
+from abc import ABCMeta, abstractmethod
+class AB(metaclass=ABCMeta):
+  @abstractmethod
+  def see(self):
+    pass
