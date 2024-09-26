@@ -29,3 +29,26 @@ select column_name from table_name where condition
 
 # 正则
 select * from table_name where column_name regexp condition
+
+# 计算字段
+- 使用 + - * /
+select column_name + column_name as alias_name from table_name
+
+# 拼接字段
+- Concat连接字段、RTrim去掉右边空格、LTrim()、Trim()
+select Concat(Trim(column_name), '(', column_name ,')') as alias_name from table_name
+
+# 日期函数
+- CurDate() 返回当前日期
+- CurTime() 返回当前时间
+- Date()  返回日期时间的日期部分
+- DateDiff()  计算两个日期之差
+- Date_Format() 返回一个格式化的日期
+- Day() 返回天数
+- DayOfWeek() 返回星期几
+- Hour()  返回小时
+- Minute()  返回分
+- Month() 返回月
+- Second()
+- Year()
+
