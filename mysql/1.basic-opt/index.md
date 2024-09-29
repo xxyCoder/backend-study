@@ -52,3 +52,17 @@ select Concat(Trim(column_name), '(', column_name ,')') as alias_name from table
 - Second()
 - Year()
 
+# 汇聚函数
+- avg()计算特定列值之和
+- count()确定行的数目
+- max()返回指定列的最大值
+- min()返回指定列的最小值
+- sum()返回指定列的和
+
+# 分组
+- group by分组，必须出现在where之后，order by之前
+- having过滤分组
+
+# 子查询
+- 将一条select语句返回的结果用于另一条select语句的where子句
+- 也可以在select语句中使用select语句
