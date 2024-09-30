@@ -66,3 +66,24 @@ select Concat(Trim(column_name), '(', column_name ,')') as alias_name from table
 # 子查询
 - 将一条select语句返回的结果用于另一条select语句的where子句
 - 也可以在select语句中使用select语句
+
+# 联结表
+
+## 内部联结
+select column_name from table_name_1, table_name_2 where table_name_1.key = table_name_2
+select column_name from table_name_1 inner join table_name_2 on table_name_1.key = table_name_2.key
+
+## 自联结
+- 单条select中不止一次引用相同的表
+select column_name from table_name where column_name in (select column_name from table_name where column_name='')
+select t1.column_name, t2.column_name from table_column as t1, table_name as t2 where p1.key = p2.key
+
+## 外部联结
+- 许多联结将一个表中的行与另一个表中的行相关联。但有时候会需要包含没有关联行的那些行
+select column_name from table_name left/right outer join table_name on table_name_1.key = table_name_2.key
+
+# 组合查询
+- 必须两个及以上的select，每个查询需要包含相同的列，order by只能使用在最后一条select语句，union自动去除重复的行，all返回所有
+select column_name from table_name where column_name ...
+union/all
+select column_name from table_name where column_name ...
