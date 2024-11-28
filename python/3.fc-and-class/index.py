@@ -24,9 +24,34 @@ def basic_fc(name, age = 22, addr = 'China', *args):
 fc = basic_fc(age=21, name='xxyCoder')
 fc()
 
+# *args和**kwrags
+
+def func_args(*args):
+  print(args, type(args))
+func_args(1, 2, 3)
+
+def func_kwrags(**kwrags):
+  print(kwrags, type(kwrags))
+func_kwrags(name="xxyCoder", age=17)
+
+# nonlocal
+def func_1():
+  a = 20
+  def func_2():
+    def func_3():
+      nonlocal a
+      a = 30
+      print(a, 'func_3')
+    func_3()
+    print(a, 'func_2')
+  func_2()
+
+func_1()
+
 # 匿名函数
 fc_lam = lambda arg1, arg2, **kwrags: print(arg1, arg2, type(kwrags))
 fc_lam(1, 2, a=3,b=4)
+fc_lam_no_arg = lambda : print('no args')
 
 '''
 # 协程
@@ -72,7 +97,7 @@ class Count():
   def __init__(self, func) -> None:
     self.cnt = 0
     self.func = func
-  def __call__(self, *args: asyncio.Any, **kwds: asyncio.Any) -> asyncio.Any:
+  def __call__(self, *args, **kwds):
     self.cnt += 1
     return self.func(*args, **kwds)
 
@@ -85,6 +110,9 @@ class Count():
 class Document():
   STATIC = 'static upper'
   static = 'static lower'
+  def __new__(cls, *args, **kwrags):
+    print(cls, args, kwrags, 'new method')
+    return super().__new__(cls)
   def __init__(self, title, author, content) -> None:
     print('init document')
     self.title = title
@@ -126,3 +154,18 @@ class AB(metaclass=ABCMeta):
   @abstractmethod
   def see(self):
     pass
+  
+# 异常
+class MyError(Exception):
+  def __init__(self, value):
+    self.value = value
+  def __str__(self):
+    return ("{} is invalid".format(repr(self.value)))
+try:
+  raise MyError(1)
+except (ValueError, IndexError) as err:
+  print('value or index error')
+except MyError as err:
+  print(err)
+except:
+  print('unknow error')
